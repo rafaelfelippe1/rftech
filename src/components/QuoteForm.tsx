@@ -150,7 +150,7 @@ export const QuoteForm = () => {
             <Button
               type="submit"
               size="lg"
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-lg py-6 rounded-full glow-effect transition-all hover:scale-105"
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm sm:text-base md:text-lg py-4 sm:py-6 rounded-full glow-effect transition-all hover:scale-105"
             >
               Enviar Pedido via WhatsApp
             </Button>
