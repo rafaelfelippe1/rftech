@@ -1,7 +1,12 @@
-import { Wrench, Sparkles, Download, Wifi, Shield, Users } from "lucide-react";
+import { Wrench, Sparkles, Download, Wifi, Shield, Users, Code } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 const services = [
+  {
+    icon: Code,
+    title: "Desenvolvimento de Sites e Aplicativos",
+    description: "Criação e manutenção de soluções web e mobile"
+  },
   {
     icon: Wrench,
     title: "Manutenção Preventiva e Corretiva",

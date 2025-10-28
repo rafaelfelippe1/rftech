@@ -7,7 +7,10 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 
+const DESENVOLVIMENTO_SERVICE = "Desenvolvimento de Sites e Aplicativos";
+
 const serviceOptions = [
+  DESENVOLVIMENTO_SERVICE,
   "Formatação e Instalação de Sistema",
   "Limpeza Física e Troca de Pasta Térmica",
   "Instalação de Programas (Pacote Office, Antivírus, etc.)",
@@ -25,13 +28,37 @@ export const QuoteForm = () => {
     description: ""
   });
 
+  const isDesenvolvimentoSelected = formData.services.includes(DESENVOLVIMENTO_SERVICE);
+
   const handleServiceToggle = (service: string) => {
-    setFormData(prev => ({
-      ...prev,
-      services: prev.services.includes(service)
-        ? prev.services.filter(s => s !== service)
-        : [...prev.services, service]
-    }));
+    setFormData(prev => {
+      // Se está marcando "Desenvolvimento", limpa todos os outros
+      if (service === DESENVOLVIMENTO_SERVICE && !prev.services.includes(service)) {
+        return {
+          ...prev,
+          services: [DESENVOLVIMENTO_SERVICE]
+        };
+      }
+      
+      // Se está desmarcando qualquer serviço
+      if (prev.services.includes(service)) {
+        return {
+          ...prev,
+          services: prev.services.filter(s => s !== service)
+        };
+      }
+      
+      // Se está marcando outro serviço e "Desenvolvimento" já está selecionado
+      if (prev.services.includes(DESENVOLVIMENTO_SERVICE)) {
+        return prev; // Não permite marcar outros
+      }
+      
+      // Marca o serviço normalmente
+      return {
+        ...prev,
+        services: [...prev.services, service]
+      };
+    });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -49,6 +76,12 @@ export const QuoteForm = () => {
 
     if (formData.services.length === 0 && !formData.description.trim()) {
       toast.error("Por favor, selecione pelo menos um serviço ou descreva seu problema");
+      return;
+    }
+
+    // Se desenvolvimento foi selecionado, descrição é obrigatória
+    if (isDesenvolvimentoSelected && !formData.description.trim()) {
+      toast.error("Por favor, descreva o que você precisa desenvolver (site, aplicativo ou manutenção)");
       return;
     }
 
@@ -117,33 +150,55 @@ export const QuoteForm = () => {
             <div>
               <Label className="text-lg mb-4 block">Quais serviços você precisa?</Label>
               <div className="space-y-3">
-                {serviceOptions.map((service) => (
-                  <div key={service} className="flex items-start space-x-3">
-                    <Checkbox
-                      id={service}
-                      checked={formData.services.includes(service)}
-                      onCheckedChange={() => handleServiceToggle(service)}
-                      className="mt-1"
-                    />
-                    <Label
-                      htmlFor={service}
-                      className="text-base font-normal cursor-pointer leading-tight"
-                    >
-                      {service}
-                    </Label>
-                  </div>
-                ))}
+                {serviceOptions.map((service) => {
+                  const isDevelopment = service === DESENVOLVIMENTO_SERVICE;
+                  const isDisabled = !isDevelopment && isDesenvolvimentoSelected;
+                  
+                  return (
+                    <div key={service} className="flex items-start space-x-3">
+                      <Checkbox
+                        id={service}
+                        checked={formData.services.includes(service)}
+                        onCheckedChange={() => handleServiceToggle(service)}
+                        disabled={isDisabled}
+                        className="mt-1"
+                      />
+                      <Label
+                        htmlFor={service}
+                        className={`text-base font-normal cursor-pointer leading-tight ${
+                          isDisabled ? "opacity-50 cursor-not-allowed" : ""
+                        }`}
+                      >
+                        {service}
+                      </Label>
+                    </div>
+                  );
+                })}
               </div>
+              {isDesenvolvimentoSelected && (
+                <p className="text-sm text-primary mt-3 font-medium">
+                  ℹ️ Desenvolvimento selecionado - descreva abaixo o que você precisa
+                </p>
+              )}
             </div>
 
             <div>
-              <Label htmlFor="description" className="text-lg mb-2 block">Outro problema? Descreva aqui:</Label>
+              <Label htmlFor="description" className="text-lg mb-2 block">
+                {isDesenvolvimentoSelected 
+                  ? "Descreva o que você precisa desenvolver: *" 
+                  : "Outro problema? Descreva aqui:"}
+              </Label>
               <Textarea
                 id="description"
-                placeholder="Ex: Meu computador não liga, está muito lento, preciso de uma peça específica..."
+                placeholder={
+                  isDesenvolvimentoSelected
+                    ? "Ex: Preciso de um site para minha empresa, aplicativo mobile para delivery, manutenção no meu site atual..."
+                    : "Ex: Meu computador não liga, está muito lento, preciso de uma peça específica..."
+                }
                 value={formData.description}
                 onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
                 className="bg-input border-border text-foreground min-h-32"
+                required={isDesenvolvimentoSelected}
               />
             </div>
 
