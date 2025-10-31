@@ -1,7 +1,8 @@
 {
-  "name": "vite_react_shadcn_ts",
+  "homepage": "https://rafaelfelippe1.github.io/rftech",
+  "name": "rftech",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
