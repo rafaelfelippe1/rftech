@@ -12,13 +12,13 @@ export const Contact = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
           <div className="text-center">
             <a 
-              href="https://wa.me/5521992491608"
+              href="https://wa.me/5521990320906"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center space-x-3 text-lg hover:text-primary transition-colors group"
             >
               <Phone className="w-6 h-6 text-primary group-hover:animate-pulse" />
-              <span className="font-semibold">(21) 99249-1608</span>
+              <span className="font-semibold">(21) 99032-0906</span>
             </a>
           </div>
           
