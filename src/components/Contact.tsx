@@ -52,7 +52,7 @@ export const Contact = () => {
         
         <div className="text-center mt-8 pt-8 border-t border-border">
           <p className="text-sm text-muted-foreground">
-            © 2025 Rafael Felippe - Técnico em Informática. Todos os direitos reservados.
+            © 2026 Rafael Felippe - Técnico em Informática. Todos os direitos reservados.
           </p>
         </div>
       </div>
